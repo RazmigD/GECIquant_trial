@@ -87,6 +87,7 @@ def plot_transients(df):
     with open('amplitudes.pkl', 'wb') as f:
         pickle.dump(amplitudes, f)
 
+# arthur hayvan e
 #plot_transients(df2)
 
 
