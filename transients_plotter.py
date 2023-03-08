@@ -27,13 +27,24 @@ def get_filtered_events(df, df_features):
 
     #df2 = df.iloc[:, 175:185]
 
+    df = df.drop(df.index[-1])
+
+    areas = df_features.loc[0].values  # Extract area values and put them in a list
+    areas = [value for value in areas if isinstance(value, (int, float)) and not np.isnan(value)]  # Removing NaN or non num values
+    df.loc['Event_Area'] = areas  # Appending areas list to df: each event has its own area
+
+    col_order = list(df.iloc[0].argsort())
+
+    # rearrange the columns of the dataframe based on the order of the second row
+    df = df.iloc[:, col_order]
+
     return df
 
 # get the order of the columns based on the values in the second row (start frame)
-col_order = list(df.iloc[0].argsort())
+#col_order = list(df.iloc[0].argsort())
 
 # rearrange the columns of the dataframe based on the order of the second row
-df = df.iloc[:, col_order]
+#df = df.iloc[:, col_order]
 
 #pdb.set_trace()
 
@@ -70,15 +81,20 @@ def plot_transients(df):
             ax[i].set_xticks([start_frame, end_frame]) # Specify position of x ticks
             ax[i].set_xticklabels([start_frame, end_frame], fontsize = 4) #Specify label of x ticks
             ax[i].set_ylabel(group_cols.columns[i])
-            ax[i].text(1.05, 0.95, f"A = {amplitudes[i]}",
+            ax[i].text(1.05, 0.95, f"Am = {amplitudes[i]}",
                        fontsize=8,
                        horizontalalignment='right',
                        verticalalignment='top',
                        transform=ax[i].transAxes)
-            ax[i].text(1.039, 0.7, f"D = {round((end_frame - start_frame) * 0.324)}s",
+            ax[i].text(1.05, 0.7, f"D = {round((end_frame - start_frame) * 0.324)}s",
                        fontsize=8,
                        horizontalalignment='right',
                        verticalalignment='top',
+                       transform=ax[i].transAxes)
+            ax[i].text(1.05, 0.43, f"Ar = {round(df.iloc[-1, i])} \u00B5m\u00B2 ",
+                       horizontalalignment='right',
+                       verticalalignment='top',
+                       fontsize=8,
                        transform=ax[i].transAxes)
             ax[i].spines[['right', 'left', 'top', 'bottom']].set_visible(False)
         fig.tight_layout()
@@ -87,7 +103,6 @@ def plot_transients(df):
     with open('amplitudes.pkl', 'wb') as f:
         pickle.dump(amplitudes, f)
 
-# arthur hayvan e
 #plot_transients(df2)
 
 

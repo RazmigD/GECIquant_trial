@@ -9,6 +9,7 @@ df = df.T #shifts columns and rows
 df_area = pd.read_csv(r'/Users/razmigderounian/PycharmProjects/GECIquant_trial/Aqua_Output_Excel.csv')
 areas = df_area.loc[0].values #Extract area values and put them in a list
 
+
 #print(len(areas))
 
 #pdb.set_trace()
