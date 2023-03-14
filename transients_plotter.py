@@ -69,13 +69,14 @@ def plot_transients(df):
             end_frame = int(group_cols.iloc[1, i])
 
             signal = group_cols.iloc[2:-1, i]  # Extract signal for current event
+
             baseline = signal[:start_frame].mean() # Find baseline of signal
             signal = signal - baseline  # Subtract baseline from signal
             peak = signal.max() # Find peak of signal
             amplitude = peak - baseline # Calculate amplitude of signal
             amplitudes.append(round(amplitude,2))  # Appending amplitudes
 
-            ax[i].plot(signal) #For each column, skip 1st 2 and last rows
+            ax[i].plot(signal) # For each column, skip 1st 2 and last rows
 
             ax[i].axvspan(start_frame, end_frame, color='yellow', alpha=0.2) #Highlight the transients
             ax[i].set_xticks([start_frame, end_frame]) # Specify position of x ticks
@@ -103,7 +104,6 @@ def plot_transients(df):
     with open('amplitudes.pkl', 'wb') as f:
         pickle.dump(amplitudes, f)
 
-#plot_transients(df2)
 
 
 
