@@ -6,8 +6,7 @@ import pandas as pd
 import pickle
 
 from data_loader import load_data
-
-df, df_features = load_data()
+df, df_features, _, _ = load_data()
 
 # getting indexes of filtered events
 def get_filtered_events(df, df_features):
@@ -80,7 +79,7 @@ def plot_transients(df):
 
             ax[i].axvspan(start_frame, end_frame, color='yellow', alpha=0.2) #Highlight the transients
             ax[i].set_xticks([start_frame, end_frame]) # Specify position of x ticks
-            ax[i].set_xticklabels([start_frame, end_frame], fontsize = 4) #Specify label of x ticks
+            ax[i].set_xticklabels([round(start_frame/3), round(end_frame/3)], fontsize = 4) #Specify label of x ticks
             ax[i].set_ylabel(group_cols.columns[i])
             ax[i].text(1.05, 0.95, f"Am = {amplitudes[i]}",
                        fontsize=8,
