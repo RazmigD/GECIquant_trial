@@ -31,6 +31,31 @@ def load_data():
     df = pd.read_csv(fluo_file, index_col='Event Index')
     df_features = pd.read_csv(features_file)
 
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    df = df.T  # shifts columns and rows
+    indexes = []
+    for index_row in df_features:
+        indexes.append(index_row)
+
+    # replace column names (e.g. Event 3)  with only numbers (3)
+    for i in range(len(df.columns)):
+        df.rename(columns={df.columns[i]: str(i + 1)}, inplace=True)
+
+    # iterate over the column indexes and drop any columns that are not in the list
+    for col_name in df.columns:
+        if col_name not in indexes:
+            df = df.drop(col_name, axis=1)
+
+    # df2 = df.iloc[:, 175:185]
+
+    df = df.drop(df.index[-1])
+    col_order = list(df.iloc[1].argsort())
+
+    # rearrange the columns of the dataframe based on the order of the second row
+    df = df.iloc[:, col_order]
+
     print("MEA files:")
     for i, file in enumerate(data_mea_files):
         print(f"{i + 1}. {file}")
